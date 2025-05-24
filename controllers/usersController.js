@@ -19,6 +19,10 @@ const validateUser = [
     .withMessage(`Last name ${alphaErr}`)
     .isLength({ min: 1, max: 10 })
     .withMessage(`Last name ${lengthErr}`),
+  body('email')
+    .trim()
+    .isEmail()
+    .withMessage('Must be a valid email address.'),
 ];
 
 // We can pass an entire array of middleware validations to our controller.
@@ -32,8 +36,8 @@ exports.usersCreatePost = [
         errors: errors.array(),
       });
     }
-    const { firstName, lastName } = req.body;
-    usersStorage.addUser({ firstName, lastName });
+    const { firstName, lastName, email } = req.body;
+    usersStorage.addUser({ firstName, lastName, email });
     res.redirect('/');
   },
 ];
@@ -71,8 +75,8 @@ exports.usersUpdatePost = [
         errors: errors.array(),
       });
     }
-    const { firstName, lastName } = req.body;
-    usersStorage.updateUser(req.params.id, { firstName, lastName });
+    const { firstName, lastName, email } = req.body;
+    usersStorage.updateUser(req.params.id, { firstName, lastName, email });
     res.redirect('/');
   },
 ];
